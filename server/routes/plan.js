@@ -1,7 +1,10 @@
 require('dotenv').config();
-const { OpenAI } = require("openai"); // Correct way to import OpenAI library
+const express = require("express");
+const router = express.Router();
+const { OpenAI } = require("openai");
+
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,  // Ensure you have this in .env
+  apiKey: process.env.OPENAI_API_KEY,
 });
 
 router.post("/generate-plan", async (req, res) => {
@@ -13,7 +16,7 @@ router.post("/generate-plan", async (req, res) => {
 
   try {
     const completion = await openai.chat.completions.create({
-      model: "gpt-3.5-turbo", // or gpt-4 if you have access
+      model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
@@ -34,3 +37,5 @@ router.post("/generate-plan", async (req, res) => {
     res.status(500).json({ error: "Failed to generate business plan" });
   }
 });
+
+module.exports = router; // ✅ This line is required
