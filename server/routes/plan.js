@@ -1,14 +1,12 @@
 const express = require("express");
 const router = express.Router();
-
+const OpenAI = require("openai");
 // Initialize OpenAI with your API key (make sure to store in .env and load it)
 // Example of correct initialization
-const { Configuration, OpenAIApi } = require("openai");
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY, // Make sure this is set in your environment
 });
-const openai = new OpenAIApi(configuration);
 
 
 router.post("/generate-plan", async (req, res) => {
