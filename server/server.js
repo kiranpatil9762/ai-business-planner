@@ -8,11 +8,11 @@ app.use(cors()); // Allow cross-origin requests
 app.use(express.json()); // Parse JSON bodies from requests
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "client","public")));
 
 // Add a route for the root URL to serve the index.html
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "client","public", "index.html"));
 });
 
 // Import the routes
