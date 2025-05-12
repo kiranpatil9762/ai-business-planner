@@ -1,24 +1,16 @@
 const express = require("express");
 const cors = require("cors");
-const path = require("path");
-require("dotenv").config();
+require('dotenv').config(); // To load environment variables like API keys
 
 const app = express();
-app.use(cors());
-app.use(express.json());
+app.use(cors()); // Allow cross-origin requests
+app.use(express.json()); // Parse JSON bodies from requests
 
-// Serve static files from client/public
-app.use(express.static(path.join(__dirname, "..", "client", "public")));
-
-// API routes
+// Import the routes
 const planRoute = require("./routes/plan");
-app.use("/api", planRoute);
+app.use("/api", planRoute); // Use /api prefix for all routes in the planRoute file
 
-// Fallback route for frontend (for GET / and others)
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "client", "public", "index.html"));
-});
-
+// Start the server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

@@ -1,27 +1,48 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Business Planner</title>
 </head>
 <body>
-  <h1>Enter Your Business Idea</h1>
-  <form id="idea-form">
-    <input type="text" id="idea" placeholder="Your business idea" required />
-    <button type="submit">Generate Plan</button>
+  <h1>AI Business Planner</h1>
+  <p>Enter your business idea and get a detailed plan:</p>
+  <form id="business-form">
+    <label for="idea">Business Idea:</label>
+    <textarea id="idea" name="idea" rows="4" cols="50" placeholder="Describe your business idea here"></textarea>
+    <br>
+    <button type="submit">Generate Business Plan</button>
   </form>
-  <pre id="result"></pre>
+
+  <h2>Generated Plan</h2>
+  <pre id="plan-output"></pre>
 
   <script>
-    document.getElementById('idea-form').addEventListener('submit', async (e) => {
+    document.getElementById('business-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+
       const idea = document.getElementById('idea').value;
-      const res = await fetch('/generate-plan', {
+
+      if (!idea) {
+        alert('Please enter a business idea');
+        return;
+      }
+
+      const response = await fetch('/api/generate-plan', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ idea })
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ idea }),
       });
-      const data = await res.json();
-      document.getElementById('result').textContent = data.plan || data.error;
+
+      const data = await response.json();
+      if (data.plan) {
+        document.getElementById('plan-output').textContent = data.plan;
+      } else {
+        document.getElementById('plan-output').textContent = 'Error generating plan';
+      }
     });
   </script>
 </body>

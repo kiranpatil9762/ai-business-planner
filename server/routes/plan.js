@@ -1,13 +1,8 @@
-const express = require("express");
-const router = express.Router();
-const OpenAI = require("openai");
-// Initialize OpenAI with your API key (make sure to store in .env and load it)
-// Example of correct initialization
-
+require('dotenv').config();
+const { OpenAI } = require("openai"); // Correct way to import OpenAI library
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // Make sure this is set in your environment
+  apiKey: process.env.OPENAI_API_KEY,  // Ensure you have this in .env
 });
-
 
 router.post("/generate-plan", async (req, res) => {
   const { idea } = req.body;
@@ -39,5 +34,3 @@ router.post("/generate-plan", async (req, res) => {
     res.status(500).json({ error: "Failed to generate business plan" });
   }
 });
-
-module.exports = router;
