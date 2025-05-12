@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AI Business Planner</title>
+</head>
+<body>
+  <h1>Enter Your Business Idea</h1>
+  <form id="idea-form">
+    <input type="text" id="idea" placeholder="Your business idea" required />
+    <button type="submit">Generate Plan</button>
+  </form>
+  <pre id="result"></pre>
+
+  <script>
+    document.getElementById('idea-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const idea = document.getElementById('idea').value;
+      const res = await fetch('/generate-plan', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ idea })
+      });
+      const data = await res.json();
+      document.getElementById('result').textContent = data.plan || data.error;
+    });
+  </script>
+</body>
+</html>
