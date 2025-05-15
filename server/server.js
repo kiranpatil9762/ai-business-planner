@@ -1,8 +1,3 @@
-const originalGet = app.get.bind(app);
-app.get = (path, ...args) => {
-  console.log("Registering route GET:", path);
-  return originalGet(path, ...args);
-};
 
 const express = require("express");
 const cors = require("cors");
@@ -12,6 +7,12 @@ const { OpenAI } = require("openai");
 
 const app = express();
 const port = process.env.PORT || 5000;
+
+const originalGet = app.get.bind(app);
+app.get = (path, ...args) => {
+  console.log("Registering route GET:", path);
+  return originalGet(path, ...args);
+};
 
 app.use(cors());
 app.use(express.json());
