@@ -1,22 +1,19 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config(); // To load environment variables like API keys
-const path = require("path"); // To handle file paths
-const { OpenAI } = require("openai"); // Assuming you're using OpenAI API
+require("dotenv").config();
+const path = require("path");
+const { OpenAI } = require("openai");
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware setup
-app.use(cors()); // Allow cross-origin requests
-app.use(express.json()); // Parse JSON bodies from requests
+app.use(cors());
+app.use(express.json());
 
-// Initialize OpenAI client with your API key
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-// POST route to generate business plan
 app.post("/api/generate-plan", async (req, res) => {
   const { idea } = req.body;
 
@@ -50,15 +47,14 @@ app.post("/api/generate-plan", async (req, res) => {
   }
 });
 
-// Serve static files (HTML, CSS, JS) from the 'client/public' folder
+// Serve static files
 app.use(express.static(path.join(__dirname, "client", "public")));
 
-// Catch-all route to serve the index.html for all non-API requests
-app.get("*", (req, res) => {
+// Wildcard route for SPA support
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "client", "public", "index.html"));
 });
 
-// Start the server
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });

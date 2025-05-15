@@ -12,7 +12,7 @@ function App() {
     setPlan('');
 
     try {
-      const response = await fetch('https://your-backend-url.onrender.com/api/generate-plan', {
+      const response = await fetch('https://your-backend-url.onrender.comgenerate-plan', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
