@@ -47,12 +47,12 @@ app.post("/api/generate-plan", async (req, res) => {
   }
 });
 
-// Serve static files
-app.use(express.static(path.join(__dirname, "..","client", "public")));
+// Serve static files from client/public
+app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
-// Wildcard route for SPA support
-app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "..", "client","public", "index.html"));
+// Fix path-to-regexp crash by using "*" instead of "/*"
+app.get("*", function (req, res) {
+  res.sendFile(path.join(__dirname, "..", "client", "public", "index.html"));
 });
 
 app.listen(port, () => {
