@@ -58,7 +58,7 @@ app.post("/api/generate-plan", async (req, res) => {
 app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
 // Fix path-to-regexp crash by using "*" instead of "/*"
-app.get("*", function (req, res) {
+app.get("/*", function (req, res) {
   res.sendFile(path.join(__dirname, "..", "client", "public", "index.html"));
 });
 
