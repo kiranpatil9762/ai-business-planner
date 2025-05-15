@@ -48,11 +48,11 @@ app.post("/api/generate-plan", async (req, res) => {
 });
 
 // Serve static files
-app.use(express.static(path.join(__dirname, "client", "public")));
+app.use(express.static(path.join(__dirname, "..","client", "public")));
 
 // Wildcard route for SPA support
 app.get("/*", function (req, res) {
-  res.sendFile(path.join(__dirname, "client", "public", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "client","public", "index.html"));
 });
 
 app.listen(port, () => {
