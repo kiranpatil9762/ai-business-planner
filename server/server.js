@@ -1,3 +1,9 @@
+const originalGet = app.get.bind(app);
+app.get = (path, ...args) => {
+  console.log("Registering route GET:", path);
+  return originalGet(path, ...args);
+};
+
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
