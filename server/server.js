@@ -52,7 +52,7 @@ app.post("/api/generate-plan", async (req, res) => {
 });
 
 // Fallback: serve index.html for unmatched routes
-app.get("*", (req, res) => {
+app.get("/*any", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "public", "index.html"));
 });
 
