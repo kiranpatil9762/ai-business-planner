@@ -1,4 +1,3 @@
-
 const express = require("express");
 const cors = require("cors");
 require("dotenv").config();
@@ -8,19 +7,13 @@ const { OpenAI } = require("openai");
 const app = express();
 const port = process.env.PORT || 5000;
 
-const originalGet = app.get.bind(app);
-app.get = (path, ...args) => {
-  console.log("Registering route GET:", path);
-  return originalGet(path, ...args);
-};
-
 app.use(cors());
 app.use(express.json());
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+// Serve static files from client/public
+app.use(express.static(path.join(__dirname, "..", "client", "public")));
 
+// OpenAI route
 app.post("/api/generate-plan", async (req, res) => {
   const { idea } = req.body;
 
@@ -29,6 +22,10 @@ app.post("/api/generate-plan", async (req, res) => {
   }
 
   try {
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY,
+    });
+
     const completion = await openai.chat.completions.create({
       model: "gpt-3.5-turbo",
       messages: [
@@ -47,21 +44,18 @@ app.post("/api/generate-plan", async (req, res) => {
     const output = completion.choices[0].message.content;
     res.json({ plan: output });
   } catch (error) {
-    console.error("Error during OpenAI API call:", error);
+    console.error("OpenAI error:", error);
     res.status(500).json({
       error: "Failed to generate business plan. Please try again later.",
     });
   }
 });
 
-// Serve static files from client/public
-app.use(express.static(path.join(__dirname, "..", "client", "public")));
-
-// Fix path-to-regexp crash by using "*" instead of "/*"
-app.get("/*", function (req, res) {
+// Fallback: serve index.html for unmatched routes
+app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "..", "client", "public", "index.html"));
 });
 
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  console.log(`Server running on http://localhost:${port}`);
 });
